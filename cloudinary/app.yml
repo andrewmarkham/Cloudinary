@@ -1,0 +1,31 @@
+meta:
+  app_id: cloudinary
+  display_name: Cloudinary
+  version: 1.0.0-dev.1
+  vendor: unrvld
+  summary: Integrate Cloudinay DAM with Content Graph
+  support_url: 
+  contact_email: 
+  categories:
+    - Site & Content Experience
+  availability:
+    - us
+
+runtime: node22
+
+functions:
+  handle_incoming_object:
+    entry_point: HandleIncomingObject
+    description: Transforms incoming data into Optimizely Hub object
+
+jobs:
+  historical_import:
+    entry_point: HistoricalImport
+    description: Performs a one-time historical import when triggered
+
+  nightly_import:
+    entry_point: NightlyImport
+    # runs at midnight every night
+    cron: 0 0 0 ? * *
+    description: Performs a nightly import for data that isn't provided or needed in real-time
+

@@ -1,0 +1,6 @@
+sections:
+  - key: instructions
+    label: Instructions
+    elements:
+    - type: instructions
+      text: Design your settings form in this file. See the [forms documentation](https://docs.developers.optimizely.com/digital-experience-platform/v1.5.0-optimizely-data-platform/docs/forms#settingsyml) for details.
