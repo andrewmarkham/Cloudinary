@@ -8,20 +8,21 @@ import {
 } from '@zaiusinc/app-sdk';
 import { odp } from '@zaiusinc/node-sdk';
 import fetch from 'node-fetch';
-import { IncomingAsset} from '../data/IncomingAssets';
 import { transformAssetToPayload } from '../lib/transformAssetToPayload';
+import { CloudinaryImage } from '../data/CloudinaryImage';
+// Use Node.js Buffer globally, do not import from 'node-fetch'
 
 interface HistoricalImportJobStatus extends JobStatus {
   state: {
-    lastTimestamp: number;
+    cursor: string;
     count: number;
     retries: number;
   };
 }
 
 interface HistoricalImportResult {
-  lastTimestamp: number;
-  assets: IncomingAsset[];
+  next_cursor: string;
+  resources: CloudinaryImage[];
 }
 
 /**
@@ -57,7 +58,7 @@ export class HistoricalImport extends Job {
       return status;
     }
     return {
-      state: { lastTimestamp: 0, count: 0, retries: 0 },
+      state: { cursor: '', count: 0, retries: 0 },
       complete: false,
     };
   }
@@ -76,12 +77,12 @@ export class HistoricalImport extends Job {
     let encounteredError = false;
     try {
       // fetch some assets from our API
-      const response = await this.fetch(state.lastTimestamp, 100);
+      const response = await this.fetch(state.cursor, 100);
 
       if (response.ok) {
         const result = (await response.json()) as HistoricalImportResult;
         // In this example, 0 assets means we have imported all the data
-        if (result.assets.length === 0) {
+        if (result.resources.length === 0) {
           // Notify the customer we completed the import and provide some information to show it was successful
           await notifications.success(
             'Historical Import',
@@ -93,11 +94,11 @@ export class HistoricalImport extends Job {
         }
 
         // Transform our assets and send a batch to Optimizely Hub
-        await odp.object('cloudinary_assets', result.assets.map(transformAssetToPayload));
+        await odp.object('cloudinary_assets', result.resources.map(transformAssetToPayload));
 
         // Update our state so the next iteration can continue where we left off
-        state.lastTimestamp = result.lastTimestamp;
-        state.count += result.assets.length;
+        state.cursor = result.next_cursor;
+        state.count += result.resources.length;
       } else {
         logger.error(
           'Historical import error:',
@@ -134,15 +135,25 @@ export class HistoricalImport extends Job {
 
   /**
    * Make an API call to get the next page and pass in our API key
-   * @param since last timestamp
+   * @param cursor last timestamp
    * @param pageSize maximum number of assets to pull
    */
-  private async fetch(since: number, pageSize: number) {
-    return await fetch('http://my-integration.com/assets', {
-      body: JSON.stringify({ since, limit: pageSize }),
+  private async fetch(cursor: string, pageSize: number) {
+
+    const username = '928476237878724';
+    const password = 'Es10da-xvBB2w6vDEHARbjnHCQA';
+    const instanceUrl = 'https://api.cloudinary.com/v1_1/dcoqw592t';
+    const url = cursor?.length > 0
+      ? `${instanceUrl}/resources/image?max_results=${pageSize}&next_cursor=${cursor}&context=true`
+      : `${instanceUrl}/resources/image?max_results=${pageSize}&context=true`;
+
+    const credentials = Buffer.from(`${username}:${password}`).toString('base64');
+
+    return await fetch(url, {
+      method: 'GET',
       headers: {
-        'content-type': 'application/json',
-        'x-api-key': this.apiKey,
+        'Authorization': `Basic ${credentials}`,
+        'content-type': 'application/json'
       },
     });
   }

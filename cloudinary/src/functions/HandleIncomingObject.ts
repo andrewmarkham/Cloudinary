@@ -1,7 +1,7 @@
 import { logger, Function, Response } from '@zaiusinc/app-sdk';
 import { odp } from '@zaiusinc/node-sdk';
-import { IncomingAsset } from '../data/IncomingAssets';
 import { transformAssetToPayload } from '../lib/transformAssetToPayload';
+import { CloudinaryImage } from '../data/CloudinaryImage';
 
 export class HandleIncomingObject extends Function {
   /**
@@ -15,7 +15,7 @@ export class HandleIncomingObject extends Function {
       return new Response(400, 'Missing required id parameter');
     } else {
       try {
-        const asset = this.request.bodyJSON as IncomingAsset;
+        const asset = this.request.bodyJSON as CloudinaryImage;
 
         // TODO: transform your incoming data into Hub API calls
         const payload = transformAssetToPayload(asset);

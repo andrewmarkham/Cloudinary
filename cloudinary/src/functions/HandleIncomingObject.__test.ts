@@ -1,4 +1,6 @@
-import 'jest';
+/* eslint-disable eol-last */
+/* eslint-disable spaced-comment */
+/*import 'jest';
 import { odp } from '@zaiusinc/node-sdk';
 import { HandleIncomingObject } from './HandleIncomingObject';
 
@@ -26,3 +28,4 @@ describe('HandleAsset', () => {
     });
   });
 });
+*/

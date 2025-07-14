@@ -1,0 +1,88 @@
+name: cloudinary_image
+display_name: Cloudinary Image
+fields:
+  - name: asset_id
+    type: string
+    display_name: Asset ID
+    description: Unique identifier for the asset in Cloudinary.
+    primary: true
+
+  - name: public_id
+    type: string
+    display_name: Public ID
+    description: Public identifier for the asset, used in URLs and API calls.
+
+  - name: format
+    type: string
+    display_name: Format
+    description: Document format, e.g. jpg, png, etc.
+
+  - name: version
+    type: number
+    display_name: Version
+    description: Document version
+
+  - name: resource_type
+    type: string
+    display_name: Resource Type
+    description: Type of resource, e.g. image, video, etc.
+
+  - name: type
+    type: string
+    display_name: Type
+    description: Type of upload, e.g. upload, private, authenticated, etc.
+
+  - name: created_at
+    type: timestamp
+    display_name: Created At
+    description: Type of upload, e.g. upload, private, authenticated, etc.
+
+  - name: bytes
+    type: number
+    display_name: Size in Bytes
+    description: Size of the asset in bytes.
+
+  - name: width
+    type: number
+    display_name: Width
+    description: width of the asset in pixels.
+
+  - name: height
+    type: number
+    display_name: Height
+    description: Height of the asset in pixels.
+
+  - name: asset_folder
+    type: string
+    display_name: Asset Folder
+    description: Folder in which the asset is stored in Cloudinary.
+
+  - name: display_name
+    type: string
+    display_name: Display Name
+    description: Name of the asset as displayed in Cloudinary.
+
+  - name: url
+    type: string
+    display_name: URL
+    description: URL to access the asset.
+
+  - name: secure_url
+    type: string
+    display_name: Secure URL
+    description: Secure URL to access the asset over HTTPS.
+
+  - name: alt
+    type: string
+    display_name: Alt Text
+    description: Alternative text for the asset, used for accessibility.
+
+  - name: caption
+    type: string
+    display_name: Caption
+    description: Caption for the asset, providing additional context.
+
+  - name: last_updated
+    type: timestamp
+    display_name: Last Updated
+    description: Timestamps for when the asset was last updated.
