@@ -13,14 +13,18 @@ export interface CloudinaryImage {
     display_name: string;
     url: string;
     secure_url: string;
-    context: {
-        custom: {
-            alt: string;
-            caption: string;
-        };
-    };
-    last_updated: {
-        context_updated_at: string;
-        updated_at: string;
-    };
+    context?:  Context;
+    last_updated?: LastUpdated;
 }
+
+interface Context {
+    custom: {
+        alt: string;
+        caption: string;
+    };
+};
+
+interface LastUpdated {
+    context_updated_at: string;
+    updated_at: string;
+};

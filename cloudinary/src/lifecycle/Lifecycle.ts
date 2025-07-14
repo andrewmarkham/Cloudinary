@@ -7,7 +7,9 @@ import {
   Request,
   storage,
   SubmittedFormData,
+  jobs
 } from '@zaiusinc/app-sdk';
+import { HistoricalImport } from '../jobs/HistoricalImport';
 
 export class Lifecycle extends AppLifecycle {
   public async onInstall(): Promise<LifecycleResult> {
@@ -34,8 +36,25 @@ export class Lifecycle extends AppLifecycle {
     try {
       // TODO: any logic you need to perform when a setup form section is submitted
       // When you are finished, save the form data to the settings store
-      await storage.settings.put(section, formData);
+
+      logger.debug(`section: ${section}, action: ${_action}, formData : ${JSON.stringify(formData)}`);
+
+      if (section === 'authorisation') {
+
+        switch (_action) {
+        case 'save':
+          await storage.settings.put(section, formData);
+          break;
+        case 'sync':
+          logger.info('Starting Job');
+          await jobs.trigger('historical_import', {}); // <-- starting a Job
+          result.addToast('info', 'Sync Started');
+          break;
+        }
+      }
+
       return result;
+
     } catch {
       return result.addToast(
         'danger',

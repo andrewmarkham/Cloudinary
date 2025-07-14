@@ -1,9 +1,9 @@
 meta:
   app_id: cloudinary
   display_name: Cloudinary
-  version: 1.0.0-dev.2
+  version: 1.0.0-dev.9
   vendor: unrvld
-  summary: Integrate Cloudinay DAM with Content Graph
+  summary: Integrate Cloudinary DAM with Content Graph
   support_url: https://support@Optimizely.com
   contact_email: andrew.markham@unrvld.com
   categories:

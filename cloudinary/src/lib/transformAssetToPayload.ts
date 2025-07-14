@@ -26,9 +26,9 @@ export function transformAssetToPayload(asset: CloudinaryImage): ObjectPayload {
 
     display_name: asset.display_name,
     url: asset.url,
-    alt: asset.context.custom.alt || '',
-    caption: asset.context.custom.caption || '',
-    last_updated: asset.last_updated.updated_at
+    alt: asset.context?.custom?.alt || '',
+    caption: asset.context?.custom?.caption || '',
+    last_updated: asset.last_updated?.updated_at || null
   };
 }
 

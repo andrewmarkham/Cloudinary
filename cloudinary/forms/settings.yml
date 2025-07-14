@@ -1,6 +1,6 @@
 sections:
-  - key: instructions
-    label: Instructions
+  - key: authorisation
+    label: Authorisation
     elements:
     - type: text
       key: url
@@ -15,3 +15,10 @@ sections:
       key: password
       label: Passwword
       help: The password for the Cloudinary account.
+    - type: button
+      label: Save
+      action: save
+      style: primary
+    - type: button
+      label: Start Sync
+      action: sync

@@ -77,12 +77,26 @@ export class HistoricalImport extends Job {
     let encounteredError = false;
     try {
       // fetch some assets from our API
-      const response = await this.fetch(state.cursor, 100);
+      const response = await this.fetch(state.cursor, 500);
+
+      logger.info(`response ${response.status}, ${response.statusText} `);
 
       if (response.ok) {
+
         const result = (await response.json()) as HistoricalImportResult;
+        const cursor = result.next_cursor ?? '';
+
+        // Update our state so the next iteration can continue where we left off
+        state.cursor = cursor;
+        state.count += result.resources.length;
+
+        // Transform our assets and send a batch to Optimizely Hub
+        if (result.resources.length > 0) {
+          await odp.object('cloudinary_image', result.resources.map(transformAssetToPayload));
+        }
+
         // In this example, 0 assets means we have imported all the data
-        if (result.resources.length === 0) {
+        if (result.resources.length === 0 || cursor.length === 0) {
           // Notify the customer we completed the import and provide some information to show it was successful
           await notifications.success(
             'Historical Import',
@@ -93,12 +107,6 @@ export class HistoricalImport extends Job {
           return status;
         }
 
-        // Transform our assets and send a batch to Optimizely Hub
-        await odp.object('cloudinary_assets', result.resources.map(transformAssetToPayload));
-
-        // Update our state so the next iteration can continue where we left off
-        state.cursor = result.next_cursor;
-        state.count += result.resources.length;
       } else {
         logger.error(
           'Historical import error:',
@@ -140,14 +148,28 @@ export class HistoricalImport extends Job {
    */
   private async fetch(cursor: string, pageSize: number) {
 
-    const username = '928476237878724';
-    const password = 'Es10da-xvBB2w6vDEHARbjnHCQA';
-    const instanceUrl = 'https://api.cloudinary.com/v1_1/dcoqw592t';
+    logger.info(`cursor: ${cursor}`);
+    logger.info(`pageSize: ${pageSize}`);
+
+    const settings = await storage.settings.get('authorisation');
+    logger.info(`Settings: ${JSON.stringify(settings)}`);
+
+    const username = settings.username as string;
+    const password = settings.password as string;
+    const instanceUrl = settings.url as string;
+
     const url = cursor?.length > 0
       ? `${instanceUrl}/resources/image?max_results=${pageSize}&next_cursor=${cursor}&context=true`
       : `${instanceUrl}/resources/image?max_results=${pageSize}&context=true`;
 
+    logger.info(`username: ${username}`);
+    logger.info(`password: ${password}`);
+    logger.info(`instanceUrl: ${instanceUrl}`);
+    logger.info(`url: ${url}`);
+
     const credentials = Buffer.from(`${username}:${password}`).toString('base64');
+
+    logger.info(`credentials: ${credentials}`);
 
     return await fetch(url, {
       method: 'GET',
