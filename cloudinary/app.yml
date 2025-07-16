@@ -1,7 +1,7 @@
 meta:
   app_id: cloudinary
   display_name: Cloudinary
-  version: 1.0.0-dev.9
+  version: 1.0.0-dev.15
   vendor: unrvld
   summary: Integrate Cloudinary DAM with Content Graph
   support_url: https://support@Optimizely.com
@@ -13,10 +13,10 @@ meta:
 
 runtime: node22
 
-#functions:
-#  handle_incoming_object:
-#    entry_point: HandleIncomingObject
-#    description: Transforms incoming data into Optimizely Hub object
+functions:
+  handle_new_asset:
+    entry_point: HandleNewAsset
+    description: Webhook that handles new assets uploaded to Cloudinary
 
 jobs:
   historical_import:

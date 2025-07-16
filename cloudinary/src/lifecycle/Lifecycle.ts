@@ -7,15 +7,17 @@ import {
   Request,
   storage,
   SubmittedFormData,
-  jobs
+  jobs,
+  functions
 } from '@zaiusinc/app-sdk';
-import { HistoricalImport } from '../jobs/HistoricalImport';
 
 export class Lifecycle extends AppLifecycle {
   public async onInstall(): Promise<LifecycleResult> {
     try {
       logger.info('Performing Install');
       // TODO: any operation you need to perform during installation
+
+
       return { success: true };
     } catch (error: any) {
       logger.error('Error during installation:', error);
@@ -44,6 +46,10 @@ export class Lifecycle extends AppLifecycle {
         switch (_action) {
         case 'save':
           await storage.settings.put(section, formData);
+          await registerWebhooks(formData.url as string,
+                                 formData.username as string,
+                                 formData.password as string);
+
           break;
         case 'sync':
           logger.info('Starting Job');
@@ -109,4 +115,36 @@ export class Lifecycle extends AppLifecycle {
     // TODO: any logic required to properly uninstall the app
     return { success: true };
   }
+}
+
+
+async function registerWebhooks(instanceUrl: string, username: string, password: string): Promise<void> {
+  const endpoints = await functions.getEndpoints();
+
+  const requests: Array<Promise<Response>> = [];
+
+  Object.entries(endpoints).forEach(([key, value]) => {
+    logger.info(`Function Endpoint: ${key} - ${value}`);
+
+    const credentials = Buffer.from(`${username}:${password}`).toString('base64');
+    const url = `${instanceUrl}/triggers`;
+
+    logger.info(`Url: ${url}`);
+    logger.info(`Credentials: ${credentials}`);
+
+    const r = fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({
+        uri: value,
+        event_type: 'upload'
+      }),
+      headers: {
+        'Authorization': `Basic ${credentials}`,
+        'content-type': 'application/json'
+      },
+    });
+    requests.push(r);
+  });
+
+  await Promise.all(requests);
 }

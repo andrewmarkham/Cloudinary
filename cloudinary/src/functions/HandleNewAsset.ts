@@ -1,25 +1,25 @@
 import { logger, Function, Response } from '@zaiusinc/app-sdk';
 import { odp } from '@zaiusinc/node-sdk';
-import { transformAssetToPayload } from '../lib/transformAssetToPayload';
-import { CloudinaryImage } from '../data/CloudinaryImage';
+import { transformNotificationToPayload } from '../lib/transformAssetToPayload';
+import { CloudinatyImageUploadNotification } from '../data/CloudinatyImageUploadNotification';
 
-export class HandleIncomingObject extends Function {
+export class HandleNewAsset extends Function {
   /**
    * Handle a request to the handle_incoming_object function URL
    * this.request contains the request information
    * @returns Response as the HTTP response
    */
   public async perform(): Promise<Response> {
-    const id = this.request.params['id'] as string;
-    if (!id) {
-      return new Response(400, 'Missing required id parameter');
+
+    const notifcation = this.request.bodyJSON as CloudinatyImageUploadNotification;
+
+    if (!notifcation?.asset_id) {
+      return new Response(400, 'Unable to process request, invalid notification');
     } else {
       try {
-        const asset = this.request.bodyJSON as CloudinaryImage;
 
-        // TODO: transform your incoming data into Hub API calls
-        const payload = transformAssetToPayload(asset);
-        await odp.object('cloudinary_assets', payload);
+        const payload = transformNotificationToPayload(notifcation);
+        await odp.object('cloudinary_image', payload);
 
         // return the appropriate status/response
         return new Response(200);

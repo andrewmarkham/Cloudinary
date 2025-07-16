@@ -17,14 +17,14 @@ export interface CloudinaryImage {
     last_updated?: LastUpdated;
 }
 
-interface Context {
+export interface Context {
     custom: {
         alt: string;
         caption: string;
     };
 };
 
-interface LastUpdated {
+export interface LastUpdated {
     context_updated_at: string;
     updated_at: string;
 };

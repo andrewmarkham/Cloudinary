@@ -7,14 +7,17 @@ sections:
       label: Integration URL
       help: The URL of the Cloudinary account to integrate with. This is typically in the format `https://api.cloudinary.com/v1_1/<cloud_name>`.
       hint: https://api.cloudinary.com/v1_1/<cloud_name>
+      required: true
     - type: text
       key: username
       label: Username
       help: The username for the Cloudinary account.
+      required: true
     - type: secret
       key: password
       label: Passwword
       help: The password for the Cloudinary account.
+      required: true
     - type: button
       label: Save
       action: save
