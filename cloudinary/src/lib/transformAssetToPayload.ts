@@ -1,7 +1,7 @@
 import { ObjectPayload } from '@zaiusinc/node-sdk';
 
 import { CloudinaryImage } from '../data/CloudinaryImage';
-import { CloudinatyImageUploadNotification } from '../data/CloudinatyImageUploadNotification';
+import { CloudinaryImageUploadNotification } from '../data/CloudinatyImageUploadNotification';
 
 /**
  * Example transformer to convert an incoming asset into a Optimizely Hub payload
@@ -33,7 +33,7 @@ export function transformAssetToPayload(asset: CloudinaryImage): ObjectPayload {
   };
 }
 
-export function transformNotificationToPayload(asset: CloudinatyImageUploadNotification): ObjectPayload {
+export function transformNotificationToPayload(asset: CloudinaryImageUploadNotification): ObjectPayload {
   return {
     asset_id: asset.asset_id,
     type: asset.type,

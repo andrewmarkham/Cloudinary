@@ -1,6 +1,6 @@
 import { Context, LastUpdated } from './CloudinaryImage';
 
-export interface CloudinatyImageUploadNotification {
+export interface CloudinaryImageUploadNotification {
   notification_type: string;
   timestamp: string;
   request_id: string;

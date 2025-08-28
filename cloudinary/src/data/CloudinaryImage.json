@@ -1,0 +1,108 @@
+{
+    "key": "cloudinaryImageMedia",
+    "displayName": "Cloudinary Image",
+    "description": "Used for image assets from Cloudinary.",
+    "baseType": "image",
+    "source": "",
+    "sortOrder": 510,
+    "features": [
+        "versioning",
+        "publishPeriod",
+        "routing",
+        "binary"
+    ],
+    "usage": [
+        "instance"
+    ],
+    "mayContainTypes": [],
+    "mediaFileExtensions": [
+        "jpg",
+        "jpeg",
+        "jpe",
+        "ico",
+        "gif",
+        "bmp",
+        "heif",
+        "png",
+        "svg",
+        "tiff",
+        "webp",
+        "avif"
+    ],
+    "properties": {
+        "Width": {
+            "type": "integer",
+            "displayName": "Width",
+            "description": "",
+            "localized": false,
+            "required": false,
+            "group": "Information",
+            "sortOrder": 40,
+            "editorSettings": {}
+        },
+        "Height": {
+            "type": "integer",
+            "displayName": "Height",
+            "description": "",
+            "localized": false,
+            "required": false,
+            "group": "Information",
+            "sortOrder": 50,
+            "editorSettings": {}
+        },
+        "SizeInBytes": {
+            "type": "integer",
+            "displayName": "Size in Bytes",
+            "description": "",
+            "localized": false,
+            "required": false,
+            "group": "Information",
+            "sortOrder": 60,
+            "editorSettings": {}
+        },
+        "Url": {
+            "type": "url",
+            "displayName": "Image Url",
+            "description": "",
+            "localized": false,
+            "required": true,
+            "group": "Information",
+            "sortOrder": 30,
+            "editorSettings": {}
+        },
+        "AssetId": {
+            "type": "string",
+            "format": "shortString",
+            "displayName": "Asset Id",
+            "description": "",
+            "localized": false,
+            "required": true,
+            "group": "Information",
+            "sortOrder": 0,
+            "indexingType": "queryable",
+            "editorSettings": {}
+        },
+        "AltText": {
+            "type": "string",
+            "format": "shortString",
+            "displayName": "Alt text",
+            "description": "",
+            "localized": true,
+            "required": false,
+            "group": "Information",
+            "sortOrder": 20,
+            "editorSettings": {}
+        },
+        "displayName": {
+            "type": "string",
+            "format": "shortString",
+            "displayName": "Display Name",
+            "description": "",
+            "localized": true,
+            "required": false,
+            "group": "Information",
+            "sortOrder": 10,
+            "editorSettings": {}
+        }
+    }
+}

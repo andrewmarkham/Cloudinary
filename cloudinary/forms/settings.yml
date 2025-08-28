@@ -1,6 +1,6 @@
 sections:
-  - key: authorisation
-    label: Authorisation
+  - key: cloudinary_connection
+    label: Cloudinary Connection
     elements:
     - type: text
       key: url
@@ -18,6 +18,45 @@ sections:
       label: Passwword
       help: The password for the Cloudinary account.
       required: true
+    - type: button
+      label: Connect
+      action: cloudinary_connect
+      style: primary
+
+  - key: optimizely_graph_connection
+    label: Optimizely Graph Connection
+    elements:
+    - type: text
+      key: url
+      label: Integration URL
+      help: The URL of the Cloudinary account to integrate with. This is typically in the format `https://api.cloudinary.com/v1_1/<cloud_name>`.
+      hint: https://api.cloudinary.com/v1_1/<cloud_name>
+      required: true
+    - type: text
+      key: username
+      label: Username
+      help: The username for the Cloudinary account.
+      required: true
+    - type: secret
+      key: password
+      label: Passwword
+      help: The password for the Cloudinary account.
+      required: true
+    - type: button
+      label: Connect
+      action: saas_connect
+      style: primary
+
+  - key: data_sync
+    label: Data Sync
+    elements:
+    - type: text
+      key: url
+      label: Integration URL
+      help: The URL of the Cloudinary account to integrate with. This is typically in the format `https://api.cloudinary.com/v1_1/<cloud_name>`.
+      hint: https://api.cloudinary.com/v1_1/<cloud_name>
+      required: true
+
     - type: button
       label: Save
       action: save
